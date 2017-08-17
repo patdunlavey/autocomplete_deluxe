@@ -209,6 +209,12 @@ function autocomplete_deluxe_field_widget_settings_form($field, $instance) {
     '#description' => t('A message text which will be displayed, if the entered term was not found.'),
     '#default_value' => isset($settings['not_found_message']) ? t($settings['not_found_message']) : t("The term '@term' will be added."),
   );
+  $form['show_link'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show manage terms link'),
+    '#description' => t('Should users be able to have direct access to manage terms for vocabulary of this field?'),
+    '#default_value' => isset($settings['show_link']) ? $settings['show_link'] : '',
+  );
 
   if (module_exists('synonyms')) {
     $form['use_synonyms'] = array(
@@ -258,6 +264,16 @@ function autocomplete_deluxe_field_widget_error($element, $error, $form, &$form_
  * Implements hook_field_widget_form().
  */
 function autocomplete_deluxe_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  global $base_url;
+
+  if (isset($instance['widget']['settings']['show_link']) && !empty($instance['widget']['settings']['show_link']) && user_access('administer taxonomy')) {
+    $vocabulary = $field['settings']['allowed_values'][0]['vocabulary'];
+    $suffix = '<a target="_blank" href="' . $base_url . '/admin/structure/taxonomy/' . $vocabulary . '">' . t('Manage terms') . '</a>';
+  }
+  else {
+    $suffix = '';
+  }
+
   $element += array(
     '#type' => 'autocomplete_deluxe',
     '#size' => $instance['widget']['settings']['size'],
@@ -266,6 +282,7 @@ function autocomplete_deluxe_field_widget_form(&$form, &$form_state, $field, $in
     '#use_synonyms' => isset($instance['widget']['settings']['use_synonyms']) ? $instance['widget']['settings']['use_synonyms'] : 0,
     '#delimiter' => isset($instance['widget']['settings']['delimiter']) ? $instance['widget']['settings']['delimiter'] : '',
     '#not_found_message' => isset($instance['widget']['settings']['not_found_message']) ? $instance['widget']['settings']['not_found_message'] : t("The term '@term' will be added."),
+    '#suffix' => $suffix,
   );
 
   $multiple = $field['cardinality'] > 1 || $field['cardinality'] == FIELD_CARDINALITY_UNLIMITED ? TRUE : FALSE;
