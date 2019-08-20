@@ -69,6 +69,7 @@ A: Why yes, yes you can!  First, add the field as a traditional exposed
    never written a module before), where your .module file contains
    something like the following:
 
+```
    function MY_MODULE_form_alter(&$form, &$form_state, $form_id) {
      if ($form_id == 'views_exposed_form' &&
        $form_state['view']->name == '<my view name>') {
@@ -83,11 +84,13 @@ A: Why yes, yes you can!  First, add the field as a traditional exposed
        );
      }
    }
+```
 
    So if you have a view with the machine name 'list_articles', and you want
    to provide an exposed Autocomplete Deluxe filter for a field with the
    machine name 'field_term_ref', the code becomes:
 
+```
    function MY_MODULE_form_alter(&$form, &$form_state, $form_id) {
      if ($form_id == 'views_exposed_form' &&
        $form_state['view']->name == 'list_articles') {
@@ -104,14 +107,19 @@ A: Why yes, yes you can!  First, add the field as a traditional exposed
        );
      }
    }
+```
 
 
 MAINTAINERS
 -----------
 
 Current maintainers:
+
  * Edward Chan (edwardchiapet) - https://www.drupal.org/u/edwardchiapet
  * Lee Nakamura (LNakamura) - https://www.drupal.org/u/lnakamura
 
 Active support and ongoing development by Mediacurrent -
 http://www.mediacurrent.com/
+
+For additional information, see the project page on Drupal.org
+<https://www.drupal.org/project/autocomplete_deluxe>
