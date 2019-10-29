@@ -387,6 +387,11 @@ function autocomplete_deluxe_element_process($element) {
       'type' => 'ajax',
       'uri' => $element['#autocomplete_deluxe_path'],
     );
+
+    // Handle content_taxonomy_autocomplete.
+    if(!empty($element['#element_validate']) && in_array('content_taxonomy_autocomplete_validate_deny_new_terms', $element['#element_validate'])) {
+      $js_settings['autocomplete_deluxe'][$html_id]['deny_new_terms'] = 1;
+    }
   }
   else {
     // If there is no source (path or data), we don't want to add the js

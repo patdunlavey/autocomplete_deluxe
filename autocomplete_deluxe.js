@@ -184,11 +184,16 @@
         }
       }
       if ($.isEmptyObject(result)) {
-        result.push({
-          label: Drupal.t(self.not_found_message, {'@term' : term}),
-          value: term,
-          newTerm: true
-        });
+        if (typeof settings.deny_new_terms == "undefined") {
+          result.push({
+            label: Drupal.t(self.not_found_message, {'@term': term}),
+            value: term,
+            newTerm: true
+          });
+        }
+        else {
+          // TODO: figure out how to show message but don't enter new term.
+        }
       }
       return result;
     };
